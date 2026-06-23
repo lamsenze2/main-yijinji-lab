@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MK体育 ─ 运动信息与内容聚合平台介绍</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'PingFang SC', Roboto, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(145deg, #fce4b8 0%, #fcd4a0 40%, #fcc484 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      line-height: 1.6;
+      color: #2e2b28;
+    }
+
+    .page-wrapper {
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2.2rem;
+    }
+
+    /* 卡片通用设计 */
+    .card {
+      background: #ffffff;
+      border-radius: 36px;
+      padding: 2.5rem 2.8rem;
+      box-shadow: 0 12px 30px rgba(170, 100, 30, 0.10), 0 4px 10px rgba(0, 0, 0, 0.02);
+      backdrop-filter: blur(2px);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px rgba(180, 90, 20, 0.12);
+    }
+
+    /* hero 区 */
+    .hero {
+      text-align: center;
+      padding: 3.6rem 2.8rem 3rem;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      background: linear-gradient(135deg, #b55f2a, #d97f3a);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.3rem;
+      line-height: 1.2;
+    }
+
+    .hero .subhead {
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: #6b4d32;
+      margin-top: 0.6rem;
+      border-top: 2px solid #f0cfb0;
+      display: inline-block;
+      padding-top: 0.5rem;
+      opacity: 0.9;
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin: 1.5rem auto 0;
+      font-size: 1.1rem;
+      color: #3d322b;
+    }
+
+    /* 优势区 (卡片网格) */
+    .advantages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .advantage-item {
+      background: #fffcf8;
+      border-radius: 28px;
+      padding: 1.8rem 1.6rem;
+      box-shadow: 0 6px 16px rgba(150, 80, 20, 0.04);
+      border: 1px solid rgba(240, 190, 140, 0.2);
+      transition: all 0.2s;
+    }
+
+    .advantage-item:hover {
+      background: #fffbf5;
+      border-color: #ecc39e;
+    }
+
+    .advantage-item h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #9a5f2e;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .advantage-item h3::before {
+      content: "✦";
+      color: #d9823b;
+      font-size: 1.2rem;
+      margin-right: 0.2rem;
+    }
+
+    .advantage-item p {
+      color: #4b3a2d;
+      font-size: 0.95rem;
+    }
+
+    /* 说明区 (两栏) */
+    .info-two-col {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+
+    .info-col {
+      flex: 1 1 240px;
+    }
+
+    .info-col h2 {
+      font-size: 1.8rem;
+      font-weight: 620;
+      color: #754e28;
+      margin-bottom: 1rem;
+      border-left: 5px solid #d9823b;
+      padding-left: 1rem;
+    }
+
+    .info-col p {
+      margin-bottom: 1rem;
+      color: #3e342c;
+    }
+
+    .info-col strong {
+      color: #9c602b;
+    }
+
+    .info-highlight {
+      background: #f7ede4;
+      border-radius: 60px;
+      padding: 1rem 1.8rem;
+      display: inline-block;
+      font-weight: 500;
+      margin-top: 0.6rem;
+    }
+
+    /* FAQ 摘要 */
+    .faq-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid #eddccd;
+      padding-bottom: 0.8rem;
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-q {
+      font-weight: 600;
+      color: #6a462b;
+      font-size: 1.05rem;
+      margin-bottom: 0.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .faq-q::before {
+      content: "Q.";
+      background: #e6c5a6;
+      color: #4a3222;
+      font-weight: 700;
+      border-radius: 30px;
+      padding: 0.1rem 0.7rem;
+      font-size: 0.9rem;
+    }
+
+    .faq-a {
+      color: #4d3d31;
+      padding-left: 2.4rem;
+      font-size: 0.95rem;
+    }
+
+    .faq-a a {
+      color: #b4692b;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px dashed #dcb086;
+    }
+
+    .faq-a a:hover {
+      color: #7a4b1e;
+      border-bottom: 1px solid #b4692b;
+    }
+
+    /* 底部链接 */
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(255, 245, 235, 0.6);
+      backdrop-filter: blur(4px);
+      border-radius: 100px;
+      padding: 1.2rem 2rem;
+      border: 1px solid rgba(210, 160, 110, 0.3);
+    }
+
+    .footer-links .brand {
+      font-weight: 600;
+      color: #6f4b28;
+      letter-spacing: 0.3px;
+    }
+
+    .footer-links a {
+      color: #935a2b;
+      text-decoration: none;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      background: #fcefe2;
+      font-size: 0.95rem;
+      transition: 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .footer-links a:hover {
+      background: #e6cbb2;
+      border-color: #c6976b;
+      color: #4a301d;
+    }
+
+    .footer-links .mk-link-special {
+      background: #d9823b;
+      color: #fff9f0;
+      font-weight: 600;
+      border: none;
+      padding: 0.3rem 1.6rem;
+    }
+
+    .footer-links .mk-link-special:hover {
+      background: #bc6e2d;
+      color: white;
+    }
+
+    /* 响应式 */
+    @media (max-width: 700px) {
+      body {
+        padding: 1rem 0.8rem;
+      }
+      .card {
+        padding: 1.8rem 1.2rem;
+        border-radius: 28px;
+      }
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+      .hero .subhead {
+        font-size: 1.1rem;
+      }
+      .advantages-grid {
+        grid-template-columns: 1fr;
+      }
+      .info-two-col {
+        flex-direction: column;
+      }
+      .footer-links {
+        flex-direction: column;
+        align-items: center;
+        border-radius: 40px;
+        padding: 1.2rem;
+      }
+    }
+
+    /* 通用分割 */
+    .spacer {
+      height: 0.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <!-- hero 区 -->
+    <div class="card hero">
+      <h1>MK体育 · 信息聚合 · 内容触达</h1>
+      <div class="subhead">围绕运动与赛事的内容型站点</div>
+      <p>
+        <strong>MK体育</strong> 是一个主要面向运动爱好者的信息展示与内容集成平台。站点聚合各类体育相关资讯、项目介绍、动态简报等内容，为访问者提供结构化的浏览体验。不同于传统的门户，其页面设计侧重于信息清晰度与浏览流畅性。
+      </p>
+    </div>
+
+    <!-- 优势区 -->
+    <div class="card">
+      <h2 style="font-size:1.6rem; font-weight:600; color:#7a532f; margin-bottom:1.2rem; display:flex; align-items:center; gap:0.5rem;">
+        <span style="width:8px; height:8px; background:#d9823b; border-radius:50%; display:inline-block;"></span> 内容编排特点
+      </h2>
+      <div class="advantages-grid">
+        <div class="advantage-item">
+          <h3>模块化分类</h3>
+          <p>按运动项目、赛事类型划分内容模块，便于快速定位感兴趣的区域。页面结构清晰，减少信息过载。</p>
+        </div>
+        <div class="advantage-item">
+          <h3>轻量视觉</h3>
+          <p>以卡片与分区承载内容，留白舒适，字体大小适中。整体风格偏重可读性，适合长时间浏览。</p>
+        </div>
+        <div class="advantage-item">
+          <h3>持续更新</h3>
+          <p>站点内容保持定期补充与优化，围绕运动领域的新动态进行调整，避免信息陈旧。</p>
+        </div>
+        <div class="advantage-item">
+          <h3>多端适配</h3>
+          <p>通过响应式布局保证在手机、平板及桌面端均有良好阅读体验，导航与交互逻辑一致。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 说明区 + 场景融合 -->
+    <div class="card">
+      <div class="info-two-col">
+        <div class="info-col">
+          <h2>站点定位与内容</h2>
+          <p><strong>MK体育</strong> 并非商业赛事直播或博彩类站点，而是一个以运动知识、项目介绍、资讯摘要为主要构成的内容聚合型网站。内容涉及足球、篮球、网球、田径等多个主流项目，同时涵盖部分运动文化相关话题。</p>
+          <p>通过筛选与整合公开信息，站点试图为爱好运动的读者提供一站式的浏览起点，减少在不同平台间跳转的精力消耗。</p>
+          <div class="info-highlight">📌 适合希望系统了解运动项目概况、赛事背景的用户</div>
+        </div>
+        <div class="info-col">
+          <h2>可信与边界</h2>
+          <p>站点所有内容均基于公开可查的资料进行编辑与重述，不提供内幕消息或未经核实的预测。每一篇文章都标注了参考来源或数据范围，方便读者进一步查证。</p>
+          <p>如果你对某个运动项目或赛事有深入的了解需求，直接访问 <a href="https://mhome-mk.com" style="color:#b25f25; font-weight:600; text-decoration:underline; text-underline-offset:4px;">MK体育</a> 浏览最新内容板块是一个不错的起点。页面内还设置了常见问题摘要与导航指引。</p>
+          <p style="margin-top:0.6rem; font-size:0.95rem; background:#f5e5d9; padding:0.6rem 1.2rem; border-radius:60px; display:inline-block;">⚖️ 内容保持中立，不偏向特定品牌或立场</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ 摘要 -->
+    <div class="card">
+      <h2 style="font-size:1.5rem; font-weight:600; color:#7a532f; margin-bottom:1rem;">常见问题摘要</h2>
+      <div class="faq-summary">
+        <div class="faq-item">
+          <div class="faq-q">MK体育覆盖哪些运动种类？</div>
+          <div class="faq-a">目前主要涉及团队球类、格斗类、田径及部分冬季项目。站点持续根据内容积累扩展分类。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">内容更新频率如何？</div>
+          <div class="faq-a">每周至少一次内容整合与优化。大型赛事期间会相应增加资讯摘要，保持信息时效性。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">是否有独立论坛或评论功能？</div>
+          <div class="faq-a">当前版本以内容展示为主，暂未开放用户评论。你可以通过页面底部的渠道获取站点动态，或直接浏览 <a href="https://mhome-mk.com">MK体育</a> 上的主题页面。</div>
+        </div>
+      </div>
+      <p style="margin-top:1.2rem; font-size:0.9rem; color:#6d5440; text-align:right;">— 更多疑问可查阅站内「关于」部分 —</p>
+    </div>
+
+    <!-- 底部链接 -->
+    <div class="footer-links">
+      <span class="brand">⚡ mk体育 · 内容聚合</span>
+      <span>
+        <a href="https://mhome-mk.com" class="mk-link-special">MK体育</a>
+        <a href="#">内容索引</a>
+        <a href="#">更新日志</a>
+        <a href="#">阅读指引</a>
+      </span>
+      <span style="font-size:0.85rem; color:#7b5a3d;">信息整理 · 公开资源</span>
+    </div>
+
+    <!-- 附加一行说明种子/变化标记（不显示内容） -->
+    <div style="height:2px; opacity:0; overflow:hidden;">变化种子已内化</div>
+  </div>
+</body>
+</html>
